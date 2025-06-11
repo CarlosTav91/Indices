@@ -1,0 +1,732 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Índices de Teledetección</title>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Open+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+  <style>
+    body {
+      font-family: 'Open Sans', sans-serif;
+      background-color: #f8fafc;
+      color: #334155;
+    }
+    h1, h2, h3, h4 {
+      font-family: 'Montserrat', sans-serif;
+      font-weight: 600;
+      color: #1e293b;
+    }
+    .index-card {
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+      border-radius: 12px;
+      overflow: hidden;
+      background-color: white;
+      border: 1px solid #e2e8f0;
+    }
+    .index-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+    }
+    .info-content {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.5s ease;
+    }
+    .info-content.expanded {
+      max-height: 500px;
+    }
+    .hero-section {
+      background: linear-gradient(135deg, #e0f2fe 0%, #f0f9ff 100%);
+    }
+    .header-section {
+      background: linear-gradient(135deg, #1e40af 0%, #3b82f6 100%);
+    }
+    .footer-section {
+      background: #e2e8f0;
+    }
+    .tag {
+      border-radius: 20px;
+      padding: 4px 12px;
+      font-size: 0.8rem;
+      font-weight: 500;
+    }
+    .satellite-icon {
+      background-color: #dbeafe;
+      color: #1d4ed8;
+    }
+    .feature-badge {
+      background-color: #eff6ff;
+      border: 1px solid #dbeafe;
+      color: #1d4ed8;
+    }
+    .sidebar-card {
+      background-color: white;
+      border: 1px solid #e2e8f0;
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+    }
+    .band-indicator {
+      width: 16px;
+      height: 16px;
+      border-radius: 50%;
+      display: inline-block;
+      margin-right: 8px;
+    }
+    .satellite-item {
+      background-color: #f1f5f9;
+      border-radius: 8px;
+      transition: all 0.2s ease;
+    }
+    .satellite-item:hover {
+      background-color: #e2e8f0;
+    }
+    .btn-primary {
+      background: linear-gradient(135deg, #1e40af 0%, #3b82f6 100%);
+      color: white;
+      transition: all 0.3s ease;
+    }
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(59, 130, 246, 0.25);
+    }
+    .btn-secondary {
+      background-color: #e2e8f0;
+      color: #1e293b;
+      transition: all 0.3s ease;
+    }
+    .btn-secondary:hover {
+      background-color: #cbd5e1;
+    }
+    .index-icon {
+      width: 48px;
+      height: 48px;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-right: 16px;
+    }
+    .index-color-1 { background-color: #dbeafe; color: #1d4ed8; }
+    .index-color-2 { background-color: #d1fae5; color: #047857; }
+    .index-color-3 { background-color: #ede9fe; color: #7e22ce; }
+    .index-color-4 { background-color: #fef3c7; color: #b45309; }
+    .index-color-5 { background-color: #ffe4e6; color: #e11d48; }
+    .index-color-6 { background-color: #cffafe; color: #0e7490; }
+    .index-color-7 { background-color: #fce7f3; color: #be185d; }
+    .index-color-8 { background-color: #dcfce7; color: #15803d; }
+    .index-color-9 { background-color: #fee2e2; color: #b91c1c; }
+    .index-color-10 { background-color: #e0e7ff; color: #4f46e5; }
+    .formula-box {
+      background-color: #f8fafc;
+      border: 1px solid #e2e8f0;
+      border-radius: 8px;
+      padding: 12px;
+      font-family: monospace;
+    }
+    .section-title {
+      position: relative;
+      padding-bottom: 12px;
+    }
+    .section-title::after {
+      content: "";
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 60px;
+      height: 4px;
+      background: linear-gradient(90deg, #3b82f6, #8b5cf6);
+      border-radius: 2px;
+    }
+  </style>
+</head>
+<body class="text-slate-700">
+  <!-- Header -->
+  <header class="header-section py-6 relative text-white">
+    <div class="container mx-auto px-4">
+      <div class="flex flex-col md:flex-row items-center justify-between">
+        <div class="flex items-center mb-6 md:mb-0">
+          <div class="mr-4 satellite-icon p-3 rounded-xl">
+            <i class="fas fa-satellite text-2xl"></i>
+          </div>
+          <div>
+            <h1 class="text-3xl font-bold">Índices de Teledetección</h1>
+            <p class="mt-1 text-blue-100">Herramientas para el análisis de imágenes satelitales</p>
+          </div>
+        </div>
+        <div class="flex space-x-3">
+          <a href="#" class="btn-primary px-4 py-2 rounded-lg flex items-center">
+            <i class="fas fa-book mr-2"></i> Documentación
+          </a>
+          <a href="#" class="btn-secondary px-4 py-2 rounded-lg flex items-center">
+            <i class="fas fa-download mr-2"></i> Guía PDF
+          </a>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- Hero Section -->
+  <section class="hero-section py-12">
+    <div class="container mx-auto px-4">
+      <div class="max-w-4xl mx-auto text-center">
+        <h2 class="text-3xl font-bold mb-4">Análisis de Imágenes Satelitales</h2>
+        <p class="text-lg text-slate-600 mb-8">
+          Los índices de teledetección son algoritmos matemáticos que combinan diferentes bandas espectrales 
+          para extraer información específica sobre la superficie terrestre. Estos índices permiten monitorear 
+          vegetación, agua, áreas urbanas y otros fenómenos desde el espacio.
+        </p>
+        
+        <div class="flex flex-wrap justify-center gap-3 mb-10">
+          <div class="feature-badge px-4 py-2 rounded-lg flex items-center">
+            <i class="fas fa-leaf text-green-600 mr-2"></i>
+            <span>Monitoreo de vegetación</span>
+          </div>
+          <div class="feature-badge px-4 py-2 rounded-lg flex items-center">
+            <i class="fas fa-tint text-blue-600 mr-2"></i>
+            <span>Detección de cuerpos de agua</span>
+          </div>
+          <div class="feature-badge px-4 py-2 rounded-lg flex items-center">
+            <i class="fas fa-fire text-orange-600 mr-2"></i>
+            <span>Identificación de áreas quemadas</span>
+          </div>
+          <div class="feature-badge px-4 py-2 rounded-lg flex items-center">
+            <i class="fas fa-city text-purple-600 mr-2"></i>
+            <span>Expansión urbana</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Main Content -->
+  <main class="container mx-auto px-4 py-12">
+    <div class="flex flex-col lg:flex-row gap-8">
+      <!-- Index Cards -->
+      <div class="lg:w-2/3">
+        <h2 class="text-2xl font-bold mb-6 section-title">Principales Índices</h2>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <!-- NDVI Card -->
+          <div class="index-card">
+            <div class="p-6">
+              <div class="flex items-start mb-4">
+                <div class="index-color-1">
+                  <i class="fas fa-leaf text-xl"></i>
+                </div>
+                <div class="flex-1 ml-4">
+                  <div class="flex justify-between items-start">
+                    <div>
+                      <h2 class="text-xl font-bold">NDVI</h2>
+                      <p class="text-sm text-slate-500">Índice de Vegetación de Diferencia Normalizada</p>
+                    </div>
+                    <span class="tag bg-blue-100 text-blue-800">Vegetación</span>
+                  </div>
+                </div>
+              </div>
+              
+              <div class="formula-box mb-4">
+                (NIR - Rojo) / (NIR + Rojo)
+              </div>
+              
+              <p class="mb-4 text-slate-600">
+                Evalúa la salud de la vegetación. Utilizado para estimar biomasa y distinguir coberturas vegetales.
+              </p>
+              
+              <button class="text-blue-600 hover:text-blue-800 flex items-center toggle-info">
+                <i class="fas fa-info-circle mr-2"></i> Más información
+              </button>
+              
+              <div class="info-content mt-4">
+                <div class="pt-4 border-t border-slate-200">
+                  <h3 class="font-bold mb-2 text-slate-800">Detalles:</h3>
+                  <p class="text-slate-600 mb-4">
+                    El NDVI es el índice de vegetación más utilizado. Valores entre 0.2 y 0.8 indican vegetación saludable, 
+                    mientras valores cercanos a 0 o negativos indican áreas sin vegetación o agua.
+                  </p>
+                  
+                  <div class="mb-4">
+                    <h3 class="font-bold mb-2 text-slate-800">Escala:</h3>
+                    <div class="flex-1 h-4 rounded-full overflow-hidden bg-gradient-to-r from-red-400 via-yellow-400 to-green-500"></div>
+                  </div>
+                  
+                  <div>
+                    <h3 class="font-bold mb-2 text-slate-800">Satélites compatibles:</h3>
+                    <div class="flex flex-wrap gap-2">
+                      <span class="bg-blue-50 text-blue-700 px-3 py-1 rounded text-sm">Landsat</span>
+                      <span class="bg-blue-50 text-blue-700 px-3 py-1 rounded text-sm">Sentinel-2</span>
+                      <span class="bg-blue-50 text-blue-700 px-3 py-1 rounded text-sm">MODIS</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- EVI Card -->
+          <div class="index-card">
+            <div class="p-6">
+              <div class="flex items-start mb-4">
+                <div class="index-color-2">
+                  <i class="fas fa-seedling text-xl"></i>
+                </div>
+                <div class="flex-1 ml-4">
+                  <div class="flex justify-between items-start">
+                    <div>
+                      <h2 class="text-xl font-bold">EVI</h2>
+                      <p class="text-sm text-slate-500">Índice de Vegetación Mejorado</p>
+                    </div>
+                    <span class="tag bg-green-100 text-green-800">Vegetación</span>
+                  </div>
+                </div>
+              </div>
+              
+              <div class="formula-box mb-4">
+                2.5 × (NIR - Rojo) / (NIR + 6 × Rojo - 7.5 × Azul + 1)
+              </div>
+              
+              <p class="mb-4 text-slate-600">
+                Corrige efectos atmosféricos y mejora el monitoreo en áreas con vegetación densa.
+              </p>
+              
+              <button class="text-blue-600 hover:text-blue-800 flex items-center toggle-info">
+                <i class="fas fa-info-circle mr-2"></i> Más información
+              </button>
+              
+              <div class="info-content mt-4">
+                <div class="pt-4 border-t border-slate-200">
+                  <h3 class="font-bold mb-2 text-slate-800">Detalles:</h3>
+                  <p class="text-slate-600 mb-4">
+                    El EVI es menos sensible a las condiciones atmosféricas y al suelo subyacente que el NDVI, 
+                    lo que lo hace ideal para regiones tropicales con alta cobertura de nubes.
+                  </p>
+                  
+                  <div class="mb-4">
+                    <h3 class="font-bold mb-2 text-slate-800">Aplicaciones:</h3>
+                    <ul class="list-disc pl-5 space-y-1 text-slate-600">
+                      <li>Monitoreo de bosques tropicales</li>
+                      <li>Agricultura de precisión</li>
+                      <li>Estudios de cambio climático</li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- NDWI Card -->
+          <div class="index-card">
+            <div class="p-6">
+              <div class="flex items-start mb-4">
+                <div class="index-color-3">
+                  <i class="fas fa-water text-xl"></i>
+                </div>
+                <div class="flex-1 ml-4">
+                  <div class="flex justify-between items-start">
+                    <div>
+                      <h2 class="text-xl font-bold">NDWI</h2>
+                      <p class="text-sm text-slate-500">Índice de Agua de Diferencia Normalizada</p>
+                    </div>
+                    <span class="tag bg-purple-100 text-purple-800">Agua</span>
+                  </div>
+                </div>
+              </div>
+              
+              <div class="formula-box mb-4">
+                (Verde - NIR) / (Verde + NIR)
+              </div>
+              
+              <p class="mb-4 text-slate-600">
+                Ideal para identificar cuerpos de agua superficiales y cambios en humedales.
+              </p>
+              
+              <button class="text-blue-600 hover:text-blue-800 flex items-center toggle-info">
+                <i class="fas fa-info-circle mr-2"></i> Más información
+              </button>
+              
+              <div class="info-content mt-4">
+                <div class="pt-4 border-t border-slate-200">
+                  <h3 class="font-bold mb-2 text-slate-800">Detalles:</h3>
+                  <p class="text-slate-600 mb-4">
+                    El NDWI utiliza la banda verde que es fuertemente reflejada por la vegetación y la banda NIR 
+                    que es absorbida por el agua. Esto permite distinguir claramente cuerpos de agua.
+                  </p>
+                  
+                  <div class="mb-4">
+                    <h3 class="font-bold mb-2 text-slate-800">Usos:</h3>
+                    <ul class="list-disc pl-5 space-y-1 text-slate-600">
+                      <li>Monitoreo de sequías</li>
+                      <li>Detección de inundaciones</li>
+                      <li>Mapeo de humedales</li>
+                      <li>Gestión de recursos hídricos</li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- NDMI Card -->
+          <div class="index-card">
+            <div class="p-6">
+              <div class="flex items-start mb-4">
+                <div class="index-color-4">
+                  <i class="fas fa-tint text-xl"></i>
+                </div>
+                <div class="flex-1 ml-4">
+                  <div class="flex justify-between items-start">
+                    <div>
+                      <h2 class="text-xl font-bold">NDMI</h2>
+                      <p class="text-sm text-slate-500">Índice de Humedad de Diferencia Normalizada</p>
+                    </div>
+                    <span class="tag bg-amber-100 text-amber-800">Humedad</span>
+                  </div>
+                </div>
+              </div>
+              
+              <div class="formula-box mb-4">
+                (NIR - SWIR1) / (NIR + SWIR1)
+              </div>
+              
+              <p class="mb-4 text-slate-600">
+                Monitorea el contenido de humedad en la vegetación, útil para detectar estrés hídrico.
+              </p>
+              
+              <button class="text-blue-600 hover:text-blue-800 flex items-center toggle-info">
+                <i class="fas fa-info-circle mr-2"></i> Más información
+              </button>
+              
+              <div class="info-content mt-4">
+                <div class="pt-4 border-t border-slate-200">
+                  <h3 class="font-bold mb-2 text-slate-800">Detalles:</h3>
+                  <p class="text-slate-600 mb-4">
+                    El NDMI es sensible a los cambios en el contenido de agua de las plantas. Valores altos indican 
+                    vegetación con buena hidratación, mientras valores bajos señalan estrés hídrico.
+                  </p>
+                  
+                  <div class="mb-4">
+                    <h3 class="font-bold mb-2 text-slate-800">Aplicaciones:</h3>
+                    <ul class="list-disc pl-5 space-y-1 text-slate-600">
+                      <li>Detección temprana de sequías</li>
+                      <li>Monitoreo de salud forestal</li>
+                      <li>Agricultura de precisión</li>
+                      <li>Evaluación de riesgo de incendios</li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- SAVI Card -->
+          <div class="index-card">
+            <div class="p-6">
+              <div class="flex items-start mb-4">
+                <div class="index-color-5">
+                  <i class="fas fa-sun text-xl"></i>
+                </div>
+                <div class="flex-1 ml-4">
+                  <div class="flex justify-between items-start">
+                    <div>
+                      <h2 class="text-xl font-bold">SAVI</h2>
+                      <p class="text-sm text-slate-500">Índice de Vegetación Ajustado al Suelo</p>
+                    </div>
+                    <span class="tag bg-rose-100 text-rose-800">Vegetación</span>
+                  </div>
+                </div>
+              </div>
+              
+              <div class="formula-box mb-4">
+                ((NIR - Rojo) / (NIR + Rojo + L)) × (1 + L)
+              </div>
+              
+              <p class="mb-4 text-slate-600">
+                Ajuste del NDVI para zonas con poca vegetación y fuerte influencia del suelo.
+              </p>
+              
+              <button class="text-blue-600 hover:text-blue-800 flex items-center toggle-info">
+                <i class="fas fa-info-circle mr-2"></i> Más información
+              </button>
+              
+              <div class="info-content mt-4">
+                <div class="pt-4 border-t border-slate-200">
+                  <h3 class="font-bold mb-2 text-slate-800">Detalles:</h3>
+                  <p class="text-slate-600 mb-4">
+                    El SAVI incluye un factor de corrección (L) para minimizar la influencia del suelo desnudo, 
+                    que puede variar entre 0 (vegetación densa) y 1 (sin vegetación). Normalmente se usa L=0.5.
+                  </p>
+                  
+                  <div class="mb-4">
+                    <h3 class="font-bold mb-2 text-slate-800">Usos principales:</h3>
+                    <ul class="list-disc pl-5 space-y-1 text-slate-600">
+                      <li>Zonas áridas y semiáridas</li>
+                      <li>Áreas con alta exposición de suelo</li>
+                      <li>Estudios en etapas tempranas de cultivos</li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- GNDVI Card -->
+          <div class="index-card">
+            <div class="p-6">
+              <div class="flex items-start mb-4">
+                <div class="index-color-6">
+                  <i class="fas fa-leaf text-xl"></i>
+                </div>
+                <div class="flex-1 ml-4">
+                  <div class="flex justify-between items-start">
+                    <div>
+                      <h2 class="text-xl font-bold">GNDVI</h2>
+                      <p class="text-sm text-slate-500">Índice de Vegetación de Diferencia Normalizada Verde</p>
+                    </div>
+                    <span class="tag bg-cyan-100 text-cyan-800">Vegetación</span>
+                  </div>
+                </div>
+              </div>
+              
+              <div class="formula-box mb-4">
+                (NIR - Verde) / (NIR + Verde)
+              </div>
+              
+              <p class="mb-4 text-slate-600">
+                Proporciona información sobre el contenido de clorofila, útil en agricultura.
+              </p>
+              
+              <button class="text-blue-600 hover:text-blue-800 flex items-center toggle-info">
+                <i class="fas fa-info-circle mr-2"></i> Más información
+              </button>
+              
+              <div class="info-content mt-4">
+                <div class="pt-4 border-t border-slate-200">
+                  <h3 class="font-bold mb-2 text-slate-800">Detalles:</h3>
+                  <p class="text-slate-600 mb-4">
+                    El GNDVI utiliza la banda verde en lugar de la roja, lo que lo hace más sensible a variaciones 
+                    en el contenido de clorofila. Es especialmente útil para cultivos con alta densidad foliar.
+                  </p>
+                  
+                  <div class="mb-4">
+                    <h3 class="font-bold mb-2 text-slate-800">Ventajas:</h3>
+                    <ul class="list-disc pl-5 space-y-1 text-slate-600">
+                      <li>Mejor detección de estrés nutricional</li>
+                      <li>Mayor sensibilidad en cultivos densos</li>
+                      <li>Menor saturación que NDVI en vegetación muy densa</li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Sidebar -->
+      <div class="lg:w-1/3">
+        <div class="sidebar-card p-6 sticky top-6">
+          <h2 class="text-xl font-bold mb-4 flex items-center section-title">
+            <i class="fas fa-chart-line text-blue-500 mr-3"></i> Comparación de Índices
+          </h2>
+          
+          <div class="mb-6">
+            <h3 class="font-bold mb-3 text-slate-800">Popularidad de Índices</h3>
+            <div class="space-y-3">
+              <div>
+                <div class="flex justify-between mb-1 text-sm">
+                  <span>NDVI</span>
+                  <span>95%</span>
+                </div>
+                <div class="w-full bg-slate-200 rounded-full h-2">
+                  <div class="bg-blue-500 h-2 rounded-full" style="width: 95%"></div>
+                </div>
+              </div>
+              <div>
+                <div class="flex justify-between mb-1 text-sm">
+                  <span>NDWI</span>
+                  <span>78%</span>
+                </div>
+                <div class="w-full bg-slate-200 rounded-full h-2">
+                  <div class="bg-cyan-500 h-2 rounded-full" style="width: 78%"></div>
+                </div>
+              </div>
+              <div>
+                <div class="flex justify-between mb-1 text-sm">
+                  <span>EVI</span>
+                  <span>65%</span>
+                </div>
+                <div class="w-full bg-slate-200 rounded-full h-2">
+                  <div class="bg-green-500 h-2 rounded-full" style="width: 65%"></div>
+                </div>
+              </div>
+              <div>
+                <div class="flex justify-between mb-1 text-sm">
+                  <span>NDMI</span>
+                  <span>58%</span>
+                </div>
+                <div class="w-full bg-slate-200 rounded-full h-2">
+                  <div class="bg-amber-500 h-2 rounded-full" style="width: 58%"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <div class="mb-6">
+            <h3 class="font-bold mb-3 text-slate-800">Banda Espectral</h3>
+            <div class="space-y-3 text-sm">
+              <div class="flex items-center">
+                <span class="band-indicator bg-red-500"></span>
+                <div class="flex-1">Rojo (Red)</div>
+                <span class="text-slate-500">0.64-0.67μm</span>
+              </div>
+              <div class="flex items-center">
+                <span class="band-indicator bg-green-500"></span>
+                <div class="flex-1">Verde (Green)</div>
+                <span class="text-slate-500">0.53-0.59μm</span>
+              </div>
+              <div class="flex items-center">
+                <span class="band-indicator bg-blue-500"></span>
+                <div class="flex-1">Azul (Blue)</div>
+                <span class="text-slate-500">0.45-0.51μm</span>
+              </div>
+              <div class="flex items-center">
+                <span class="band-indicator bg-purple-500"></span>
+                <div class="flex-1">NIR (Infrarrojo cercano)</div>
+                <span class="text-slate-500">0.85-0.88μm</span>
+              </div>
+              <div class="flex items-center">
+                <span class="band-indicator bg-orange-500"></span>
+                <div class="flex-1">SWIR (Infrarrojo de onda corta)</div>
+                <span class="text-slate-500">1.57-1.65μm</span>
+              </div>
+            </div>
+          </div>
+          
+          <div>
+            <h3 class="font-bold mb-3 text-slate-800 flex items-center">
+              <i class="fas fa-satellite text-blue-500 mr-2"></i> Satélites Comunes
+            </h3>
+            <div class="space-y-3">
+              <div class="satellite-item p-3">
+                <div class="flex items-center">
+                  <div class="bg-blue-100 p-2 rounded-lg mr-3">
+                    <i class="fas fa-satellite text-blue-500"></i>
+                  </div>
+                  <div>
+                    <div class="font-semibold">Landsat 8/9</div>
+                    <div class="text-sm text-slate-500">Resolución: 30m</div>
+                  </div>
+                </div>
+              </div>
+              <div class="satellite-item p-3">
+                <div class="flex items-center">
+                  <div class="bg-green-100 p-2 rounded-lg mr-3">
+                    <i class="fas fa-satellite text-green-500"></i>
+                  </div>
+                  <div>
+                    <div class="font-semibold">Sentinel-2</div>
+                    <div class="text-sm text-slate-500">Resolución: 10-60m</div>
+                  </div>
+                </div>
+              </div>
+              <div class="satellite-item p-3">
+                <div class="flex items-center">
+                  <div class="bg-amber-100 p-2 rounded-lg mr-3">
+                    <i class="fas fa-satellite text-amber-500"></i>
+                  </div>
+                  <div>
+                    <div class="font-semibold">MODIS</div>
+                    <div class="text-sm text-slate-500">Resolución: 250-1000m</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Additional Resource Card -->
+        <div class="sidebar-card p-6 mt-6">
+          <h3 class="font-bold mb-3 text-slate-800 flex items-center">
+            <i class="fas fa-lightbulb text-yellow-500 mr-2"></i> ¿Cómo calcular índices?
+          </h3>
+          <p class="text-slate-600 mb-4">
+            Los índices se calculan utilizando software especializado como QGIS, ArcGIS o plataformas en la nube como Google Earth Engine.
+          </p>
+          <a href="#" class="btn-primary px-4 py-2 rounded-lg flex items-center justify-center">
+            <i class="fas fa-graduation-cap mr-2"></i> Tutoriales
+          </a>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <footer class="footer-section text-slate-200 py-8">
+    <div class="container mx-auto px-4">
+      <div class="flex flex-col md:flex-row justify-between items-center">
+        <div class="mb-4 md:mb-0">
+          <div class="flex items-center">
+            <i class="fas fa-globe-americas text-blue-300 text-2xl mr-3"></i>
+            <span class="text-xl font-bold">Sistema de Análisis de Teledetección</span>
+          </div>
+          <p class="mt-2 text-slate-300">Herramientas para el monitoreo ambiental mediante imágenes satelitales</p>
+        </div>
+        
+        <div class="flex space-x-6">
+          <div>
+            <h3 class="font-bold mb-2">Desarrollado por</h3>
+            <p>Carlos Alberto Tavera Sanabria</p>
+          </div>
+          <div>
+            <h3 class="font-bold mb-2">Fuentes de imágenes</h3>
+            <div class="flex space-x-3">
+              <span class="bg-slate-700/50 px-2 py-1 rounded text-sm">Landsat</span>
+              <span class="bg-slate-700/50 px-2 py-1 rounded text-sm">Sentinel</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <div class="mt-8 pt-6 border-t border-slate-700 text-center text-sm">
+        <p>© 2025 Sistema de Análisis de Teledetección </p>
+        <p class="mt-2">Esta herramienta realizada con fines academicos utiliza datos de código abierto para el procesamiento de imágenes satelitales.</p>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    // Toggle info sections
+    document.querySelectorAll('.toggle-info').forEach(button => {
+      button.addEventListener('click', () => {
+        const infoContent = button.nextElementSibling;
+        infoContent.classList.toggle('expanded');
+        
+        // Change icon
+        const icon = button.querySelector('i');
+        if (infoContent.classList.contains('expanded')) {
+          icon.classList.remove('fa-info-circle');
+          icon.classList.add('fa-times-circle');
+          button.textContent = ' Menos información';
+        } else {
+          icon.classList.remove('fa-times-circle');
+          icon.classList.add('fa-info-circle');
+          button.textContent = ' Más información';
+        }
+        
+        // Add icon back with text
+        button.prepend(icon);
+      });
+    });
+
+    // Simulate loading
+    document.addEventListener('DOMContentLoaded', () => {
+      setTimeout(() => {
+        document.querySelectorAll('.index-card').forEach(card => {
+          card.style.opacity = '1';
+        });
+      }, 300);
+    });
+  </script>
+</body>
+</html>
